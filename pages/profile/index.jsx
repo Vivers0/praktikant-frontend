@@ -11,12 +11,6 @@ import { profileRequest } from "../../requests/profile.request";
 import { link } from '../../env.local.json';
 import { ProfileStudentSkeleton } from "../skeletons/profile.student";
 
-// {
-//     title: 'ИНФ. ТЕХНОЛОГИИ 12.06.22 ИНФ.',
-//     durationAt: '2022-07-11T17:02:53.029Z',
-//     durationTo: '2022-08-11T17:02:53.029Z',
-// }
-
 const UserClassroom = ({ classroom }) => {
     const [cr, setCr] = useState(classroom)
     const HasClassroom = () => {
@@ -80,8 +74,6 @@ const UserClassroom = ({ classroom }) => {
     return classroom ? <HasClassroom cr={classroom} /> : <EmptyClassroom />
 }
 
-
-
 const LogOut = () => {
     return (
         <Box
@@ -106,6 +98,7 @@ const Profile = () => {
         avatar: null
     })
     const [classroom, setClassroom] = useState()
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const request = async () => {
@@ -118,10 +111,10 @@ const Profile = () => {
             setClassroom(data.classroom)
         }
 
-        request();
+        request().then(() => setLoading(true));
     }, [setUser]);
 
-    return true ? <ProfileStudentSkeleton /> : (
+    return loading ? (
         <Box>
             <Header />
             <Container maxWidth="xl">
@@ -146,7 +139,7 @@ const Profile = () => {
                 </Alert>
             </Snackbar> */}
         </Box>
-    )
+    ) : <ProfileStudentSkeleton />
 }
 
 export default Profile;
