@@ -5,6 +5,8 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Container, Grid } from '@mui/material';
 import { StudentTodo } from '../components/Student/StudentTodo';
 import { Weather } from '../components/Weather/Weather';
+import { useEffect } from 'react';
+import Router from 'next/router';
 
 const StudentPage = () => {
     const [mode, setMode] = React.useState('light');
@@ -43,6 +45,12 @@ const StudentPage = () => {
             }),
         [mode],
     );
+
+    useEffect(() => {
+        if (!localStorage.getItem('user')) {
+            Router.push('/login')
+        }
+    })
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>

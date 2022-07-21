@@ -103,7 +103,6 @@ const Profile = () => {
     useEffect(() => {
         const request = async () => {
             const data = await profileRequest(btoa('savva.povetkin@mail.ru'));
-            console.log(data)
             setUser({
                 ...data.user,
                 ...{ avatar: `${link}/${data.user.avatar}.png` }
