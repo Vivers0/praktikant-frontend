@@ -47,7 +47,9 @@ const StudentPage = () => {
     );
 
     useEffect(() => {
-        if (!localStorage.getItem('user')) {
+        const LS = localStorage.getItem('user');
+        const SS = sessionStorage.getItem('user');
+        if (!LS && !SS) {
             Router.push('/login')
         }
     })

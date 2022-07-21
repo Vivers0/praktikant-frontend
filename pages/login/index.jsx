@@ -23,7 +23,9 @@ const Login = () => {
 
 
     useEffect(() => {
-        if (localStorage.getItem('user')) {
+        const LS = localStorage.getItem('user');
+        const SS = sessionStorage.getItem('user');
+        if (LS || SS) {
             Router.push('/student')
         }
     })
@@ -48,8 +50,11 @@ const Login = () => {
                 return setError({ ...error, message: request.message });
             }
             const { firstName, secondName, email: mail } = request;
-            localStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail) }));
-            localStorage.setItem('rememberMe', rememberMe);
+            if (rememberMe) {
+                localStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail) }));
+            } else {
+                sessionStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail) }));
+            }
             Router.push('/student');
         }
     }
@@ -77,14 +82,14 @@ const Login = () => {
                     onChange={emailValidatehandler}
                     error={error.validEmail}
                 />
-                <TextField 
-                label='Пароль' 
-                placeholder='Введите пароль' 
-                type='password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                fullWidth 
-                required />
+                <TextField
+                    label='Пароль'
+                    placeholder='Введите пароль'
+                    type='password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    fullWidth
+                    required />
                 <FormControlLabel
                     control={
                         <Checkbox
