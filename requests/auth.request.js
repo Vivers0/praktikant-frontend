@@ -1,7 +1,6 @@
 import { link } from '../env.local.json';
 
 export const authRequest = async (email, password) => {
-    console.log(email, password);
     return fetch(`${link}/student/auth`,
         {
             method: 'POST',

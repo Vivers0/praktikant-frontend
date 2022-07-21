@@ -4,6 +4,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Alert, Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from "@mui/material";
 import isEmail from 'validator/lib/isEmail';
 import { authRequest } from "../../requests/auth.request";
+import { encode } from 'js-base64'
 
 /*
     TODO: Сделать редирект для кнопок
@@ -42,12 +43,12 @@ const Login = () => {
     const auth = async () => {
         const isValid = validateHandler();
         if (isValid) {
-            const request = await authRequest(btoa(email), btoa(password));
+            const request = await authRequest(encode(email), encode(password));
             if (request.message) {
                 return setError({ ...error, message: request.message });
             }
             const { firstName, secondName, email: mail } = request;
-            localStorage.setItem('user', JSON.stringify({ firstName, secondName, email: btoa(mail) }));
+            localStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail) }));
             localStorage.setItem('rememberMe', rememberMe);
             Router.push('/student');
         }
