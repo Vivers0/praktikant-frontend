@@ -4,6 +4,15 @@ import React from 'react';
 import { useEffect } from 'react';
 
 export default function Home() {
+  // FIXME: Fix rememberMe
+  // window.onbeforeunload = function() {
+  //   const remember = Boolean(localStorage.removeItem('rememberMe'));
+  //   if (remember) {
+  //     localStorage.removeItem('rememberMe');
+  //     localStorage.removeItem('user');
+  //   }
+  //   return '';
+  // };
 
   const switcher = () => {
     const data = localStorage.getItem('user');

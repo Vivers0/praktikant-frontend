@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { profileRequest } from "../../requests/profile.request";
 import { link } from '../../env.local.json';
 import { ProfileStudentSkeleton } from "../skeletons/profile.student";
+import Router from 'next/router';
 
 const UserClassroom = ({ classroom }) => {
     const [cr, setCr] = useState(classroom)
@@ -75,6 +76,12 @@ const UserClassroom = ({ classroom }) => {
 }
 
 const LogOut = () => {
+    const logOut = () => {
+        localStorage.clear();
+        sessionStorage.clear();
+       Router.push('/');
+    }
+
     return (
         <Box
             display="flex"
@@ -82,7 +89,7 @@ const LogOut = () => {
             justifyContent="center"
             sx={{ marginTop: '2em' }}
         >
-            <Button variant="outlined" color="error">Выйти</Button>
+            <Button variant="outlined" color="error" onClick={logOut}>Выйти</Button>
         </Box>
     )
 }
