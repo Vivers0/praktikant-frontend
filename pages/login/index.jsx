@@ -115,7 +115,7 @@ const Login = () => {
                     </Link>
                 </Typography>
                 <Typography >
-                    <Link href="#" >
+                        <Link onClick={() => Router.push('register')} >
                         Зарегестрироваться
                     </Link>
                 </Typography>
