@@ -1,5 +1,5 @@
 import { Box, TextField } from "@mui/material"
-import { useState } from "react"
+import InputMask from 'react-input-mask'
 
 export const RegisterEmailField = ({ reducer, data }) => {
     return (
@@ -18,28 +18,34 @@ export const RegisterEmailField = ({ reducer, data }) => {
 
 export const RegisterPhoneField = ({ reducer, data }) => {
     return (
-        <TextField
-            label='Телефон'
-            placeholder='Введите номер телефона'
-            value={data.phone}
-            fullWidth
-            required
-            sx={{ marginBottom: 1 }}
+        <InputMask
             onChange={e => reducer('phone', e.target.value)}
-        // error={error.validEmail}
-        />
+            value={data.phone}
+            mask="+7 (999) 999 99 99"
+        >
+            {() => <TextField
+                label='Телефон'
+                placeholder='Введите номер телефона'
+
+                fullWidth
+                required
+                sx={{ marginBottom: 1 }}
+
+            // error={error.validEmail}
+            />}
+        </InputMask>
     )
 }
 
 export const RegisterInitialsField = ({ reducer, data }) => {
     return (
         <Box
-        display="flex"
-        justifyContent="between"
-            // sx={{
-            //     '& > :not(:nth-last-child(1))': { mr:1, },
-            //     '& > :not(style)': { mt: 1,  width: '18ch' },
-            // }}
+            display="flex"
+            justifyContent="between"
+        // sx={{
+        //     '& > :not(:nth-last-child(1))': { mr:1, },
+        //     '& > :not(style)': { mt: 1,  width: '18ch' },
+        // }}
         >
             <TextField
                 label='Имя'
@@ -67,8 +73,9 @@ export const RegisterInitialsField = ({ reducer, data }) => {
 
 export const RegisterPasswordField = ({ reducer, data, rp }) => {
     return (
-        <Box sx={{ mt: '1.5em'}}>
+        <Box sx={{ mt: '1.5em' }}>
             <TextField
+                type="password"
                 label='Пароль'
                 value={data.password}
                 fullWidth
@@ -78,6 +85,7 @@ export const RegisterPasswordField = ({ reducer, data, rp }) => {
             // error={error.validEmail}
             />
             <TextField
+                type="password"
                 label='Повторите пароль'
                 value={rp}
                 fullWidth

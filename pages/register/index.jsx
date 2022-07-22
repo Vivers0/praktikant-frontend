@@ -1,13 +1,16 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Alert, Avatar, Button, Checkbox, FormControlLabel, Grid, Link, Paper, TextField, Typography } from "@mui/material";
+import Router from 'next/router';
 import { useEffect, useState } from 'react';
+import { registerRequest } from '../../requests/register.request';
 import { RegistrationSelectType } from './components/SelectType';
 import { RegisterEmailField, RegisterInitialsField, RegisterPasswordField, RegisterPhoneField } from './components/TextFields';
 import { validateRegister } from './components/validateRegister';
 
 /* 
     TODO: ErrorHandler
-    FIXME: Увеличить размер Paper, чтобы при ошибке влезала кнопка
+    TODO: Поле для кода из email
+    FIXME: Сделать redirect для teacher
 */
 
 const Registraction = () => {
@@ -19,6 +22,7 @@ const Registraction = () => {
         password: '',
         type: 'student'
     });
+    const [confirmLicense, setConfirmLicense] = useState(false);
     const [repeatPassword, setRepeatPassword] = useState('');
     const [error, setError] = useState('');
 
@@ -27,17 +31,19 @@ const Registraction = () => {
         setData({ ...data, [d]: state });
     }
 
-    const validate = () => {
+    const validate = async () => {
         const isValid = validateRegister(data, repeatPassword, setError);
-        console.log(data)
-        if (isValid === false) {
-            console.log('da!')
+        if (isValid && confirmLicense) {
+            const request = await registerRequest(data);
+            if (request.message) {
+                return setError(request.message)
+            }
+            setError('')
+            localStorage.setItem('user', JSON.stringify(request));
+            localStorage.setItem('rememberMe', true);
+            return Router.push(data.type === 'student' ? 'student' : 'teacher');
         }
     }
-
-    // useEffect(() => {
-    //     console.log(data.type)
-    // })
     
     const paperStyle = { padding: 20, height: '77vh', width: 380, margin: "20px auto" }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
@@ -62,7 +68,8 @@ const Registraction = () => {
                         <Checkbox
                             name="checkedB"
                             color="primary"
-                            // onChange={(e) => setRememberMe(e.target.checked)}
+                            value={confirmLicense}
+                            onChange={(e) => setConfirmLicense(e.target.checked)}
                         />
                     }
                     label={<p>Я даю согласие на обработку <Link>персональных данных</Link></p>}
