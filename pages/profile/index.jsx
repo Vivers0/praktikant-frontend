@@ -109,10 +109,13 @@ const Profile = () => {
 
     useEffect(() => {
         const request = async () => {
-            const data = await profileRequest(btoa('savva.povetkin@mail.ru'));
+            const db = localStorage.getItem('user') || sessionStorage.getItem('user');
+            const { email } = JSON.parse(db);
+            const data = await profileRequest(email);
+            const avatar = data.avatar ? `${link}/${data.avatar}.png` : `${data.firstName.at(0)}${data.secondName.at(0)}`;
             setUser({
-                ...data.user,
-                ...{ avatar: `${link}/${data.user.avatar}.png` }
+                ...data,
+                ...{ avatar }
             })
             setClassroom(data.classroom)
         }

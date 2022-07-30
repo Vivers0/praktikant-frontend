@@ -2,18 +2,21 @@ import { link } from '../env.local.json';
 import axios from 'axios';
 
 export const profileRequest = async (email) => {
-    return fetch(`${link}/student/find?email=${email}`,
+    console.log(email)
+    return fetch(`${link}/find`,
         {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ email })
         })
         .then(r => r.json())
 }
 
 export const updateAvatarRequest = async (user, avatar) => {
-    const URL = `${link}/student/updateAvatar?email=${user}`;
+    const URL = `${link}/updateAvatar?email=${user}`;
     const formData = new FormData();
     formData.append('image', avatar)
 

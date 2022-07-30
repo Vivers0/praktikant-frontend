@@ -26,9 +26,10 @@ const Login = () => {
         const LS = localStorage.getItem('user');
         const SS = sessionStorage.getItem('user');
         if (LS || SS) {
-            Router.push('/student')
+            let type = LS ? JSON.parse(LS).type : JSON.parse(SS).type;
+            Router.push(`/${type}`);
         }
-    })
+    });
 
     const emailValidatehandler = (e) => {
         const value = e.target.value;
@@ -49,13 +50,13 @@ const Login = () => {
             if (request.message) {
                 return setError({ ...error, message: request.message });
             }
-            const { firstName, secondName, email: mail } = request;
+            const { firstName, secondName, email: mail, type, avatar } = request;
             if (rememberMe) {
-                localStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail) }));
+                localStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail), avatar, type }));
             } else {
-                sessionStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail) }));
+                sessionStorage.setItem('user', JSON.stringify({ firstName, secondName, email: encode(mail), avatar, type }));
             }
-            Router.push('/student');
+            Router.push(`/${type}`);
         }
     }
 
@@ -81,6 +82,7 @@ const Login = () => {
                     sx={{ marginBottom: 1 }}
                     onChange={emailValidatehandler}
                     error={error.validEmail}
+                    onKeyPress={(event) => event.key === "Enter" && auth()}
                 />
                 <TextField
                     label='Пароль'
@@ -88,6 +90,7 @@ const Login = () => {
                     type='password'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyPress={(event) => event.key === "Enter" && auth()}
                     fullWidth
                     required />
                 <FormControlLabel

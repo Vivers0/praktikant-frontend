@@ -20,6 +20,7 @@ export const ColorModeContext = React.createContext({ toggleColorMode: () => { }
 export const Header = () => {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+  const { type } = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
 
   // React.useEffect(() => {
   //   const isTheme = localStorage.getItem('theme'); 
@@ -30,7 +31,7 @@ export const Header = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Link href='/student'>
+          <Link href={`/${type}`}>
             <LinkMui
               variant="h6"
               underline="none"

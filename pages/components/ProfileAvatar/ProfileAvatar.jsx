@@ -2,14 +2,15 @@ import { Alert, Avatar, IconButton } from "@mui/material"
 import { makeStyles } from '@mui/styles'
 import { deepOrange } from '@mui/material/colors';
 import { Box } from "@mui/system"
-import { getBase64 } from "../../../utils/getbase64";
 import { updateAvatarRequest } from "../../../requests/profile.request";
 import { link } from '../../../env.local.json';
 
 export const ProfileAvatar = ({ avatar, handleUser }) => {
     const handleClick = (e) => {
         const file = e.target.files[0];
-        updateAvatarRequest(btoa('savva.povetkin@mail.ru'), file)
+        const db = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const { email } = JSON.parse(db);
+        updateAvatarRequest(email, file)
             .then(res => {
                 handleUser(prev => {
                     return { ...prev, ...{ avatar: `${link}/${res.avatar}` } }
